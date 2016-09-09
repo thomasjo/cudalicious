@@ -10,14 +10,14 @@ namespace cuda {
 
 void check_error(const cudaError_t code)
 {
-  if (code == cudaSuccess) { return; }
+  if (code == cudaSuccess) return;
   std::cerr << "CUDA error: " << cudaGetErrorString(code) << "\n";
 }
 
 template<typename T>
 T* allocate(const size_t num)
 {
-  T* dev_ptr;
+  T* dev_ptr = nullptr;
   cuda::check_error(cudaMalloc(&dev_ptr, num * sizeof(T)));
 
   return dev_ptr;
@@ -26,6 +26,7 @@ T* allocate(const size_t num)
 template<typename T>
 void free(T* dev_ptr)
 {
+  if (dev_ptr == nullptr) return;
   cuda::check_error(cudaFree(dev_ptr));
 }
 
@@ -60,6 +61,21 @@ template<typename T>
 void copy_to_host(std::vector<T>& host_vec, const T* dev_ptr)
 {
   copy_to_host(host_vec.data(), dev_ptr, host_vec.size());
+}
+
+template<typename T>
+void copy_on_device(T* dst_ptr, const T* src_ptr, const size_t num)
+{
+  cuda::check_error(cudaMemcpy(dst_ptr, src_ptr, num * sizeof(T), cudaMemcpyDeviceToDevice));
+}
+
+template<typename T>
+T* copy_on_device(const T* src_ptr, const size_t num)
+{
+  T* dst_ptr = cuda::allocate<T>(num);
+  cuda::copy_on_device(dst_ptr, src_ptr, num);
+
+  return dst_ptr;
 }
 
 void device_sync()
