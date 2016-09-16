@@ -11,7 +11,10 @@
 namespace cuda {
 namespace solver {
 
-std::string get_status_message(cusolverStatus_t status)
+using handle_t = cusolverDnHandle_t;
+using status_t = cusolverStatus_t;
+
+std::string get_status_message(status_t status)
 {
   switch (status) {
     case CUSOLVER_STATUS_SUCCESS:
@@ -43,21 +46,21 @@ std::string get_status_message(cusolverStatus_t status)
   return "An unknown error occured.";
 }
 
-void check_error(const cusolverStatus_t status)
+void check_error(const status_t status)
 {
   if (status == CUSOLVER_STATUS_SUCCESS) return;
   std::cerr << "cuSOLVER error: " << get_status_message(status) << "\n";
 }
 
-cusolverDnHandle_t initialize()
+handle_t initialize()
 {
-  cusolverDnHandle_t handle = nullptr;
+  handle_t handle = nullptr;
   check_error(cusolverDnCreate(&handle));
 
   return handle;
 }
 
-void release(cusolverDnHandle_t handle)
+void release(handle_t handle)
 {
   if (!handle) return;
   check_error(cusolverDnDestroy(handle));

@@ -11,7 +11,10 @@
 namespace cuda {
 namespace blas {
 
-std::string get_status_message(cublasStatus_t status)
+using handle_t = cublasHandle_t;
+using status_t = cublasStatus_t;
+
+std::string get_status_message(status_t status)
 {
   switch (status) {
     case CUBLAS_STATUS_SUCCESS:
@@ -30,12 +33,8 @@ std::string get_status_message(cublasStatus_t status)
       return "The GPU program failed to execute.";
     case CUBLAS_STATUS_INTERNAL_ERROR:
       return "An internal operation failed.";
-    // case CUBLAS_STATUS_MATRIX_TYPE_NOT_SUPPORTED:
-    //   return "Matrix type is not supported by the invoked functionality.";
     case CUBLAS_STATUS_NOT_SUPPORTED:
       return "Operation not supported.";
-    // case CUBLAS_STATUS_ZERO_PIVOT:
-    //   return "Zero pivot encountered.";
     case CUBLAS_STATUS_LICENSE_ERROR:
       return "Invalid license.";
   }
@@ -43,21 +42,21 @@ std::string get_status_message(cublasStatus_t status)
   return "An unknown error occured.";
 }
 
-void check_error(const cublasStatus_t status)
+void check_error(const status_t status)
 {
   if (status == CUBLAS_STATUS_SUCCESS) return;
   std::cerr << "cuBLAS error: " << get_status_message(status) << "\n";
 }
 
-cublasHandle_t initialize()
+handle_t initialize()
 {
-  cublasHandle_t handle = nullptr;
+  handle_t handle = nullptr;
   check_error(cublasCreate(&handle));
 
   return handle;
 }
 
-void release(cublasHandle_t handle)
+void release(handle_t handle)
 {
   if (!handle) return;
   check_error(cublasDestroy(handle));
