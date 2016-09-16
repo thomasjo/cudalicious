@@ -93,4 +93,4 @@ void peek_at_last_error()
   cuda::check_error(cudaPeekAtLastError());
 }
 
-}
+} // cuda
