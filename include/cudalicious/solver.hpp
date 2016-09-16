@@ -66,5 +66,24 @@ void release(handle_t handle)
   check_error(cusolverDnDestroy(handle));
 }
 
+int geqrf_buffer_size(handle_t handle, int m, int n, float* a, int lda)
+{
+  int buffer_size;
+  check_error(cusolverDnSgeqrf_bufferSize(handle, m, n, a, lda, &buffer_size));
+
+  return buffer_size;
+}
+
+void geqrf(handle_t handle, int m, int n, float* a, int lda, float* tau, float* workspace, int workspace_size,
+           int* info, bool verify = false)
+{
+  check_error(cusolverDnSgeqrf(handle, m, n, a, lda, tau, workspace, workspace_size, info));
+  if (!verify) return;
+
+  int temp;
+  cuda::copy_to_host(&temp, info, 1);
+  assert(temp == 0);
+}
+
 } // solver
 } // cuda
