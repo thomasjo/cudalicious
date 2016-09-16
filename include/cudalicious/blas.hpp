@@ -62,5 +62,13 @@ void release(handle_t handle)
   check_error(cublasDestroy(handle));
 }
 
+void gemm(handle_t handle, int n, int m, int k, float alpha, const float* a, int lda, const float* b, int ldb,
+          float beta, float* c, int ldc, bool transpose_a = false, bool transpose_b = false)
+{
+  const auto operation_a = transpose_a ? CUBLAS_OP_T : CUBLAS_OP_N;
+  const auto operation_b = transpose_b ? CUBLAS_OP_T : CUBLAS_OP_N;
+  check_error(cublasSgemm(handle, operation_a, operation_b, m, n, k, &alpha, a, lda, b, ldb, &beta, c, ldc));
+}
+
 } // blas
 } // cuda
