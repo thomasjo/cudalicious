@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "cudalicious/cudalicious.h"
+#include <cudalicious/core.hpp>
 
 __global__
 void add_kernel(float* c, const float* a, const float* b, const size_t n)
