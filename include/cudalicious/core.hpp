@@ -14,6 +14,21 @@ void check_error(const cudaError_t code)
   std::cerr << "CUDA error: " << cudaGetErrorString(code) << "\n";
 }
 
+void device_sync()
+{
+  cuda::check_error(cudaDeviceSynchronize());
+}
+
+void device_reset()
+{
+  cuda::check_error(cudaDeviceReset());
+}
+
+void peek_at_last_error()
+{
+  cuda::check_error(cudaPeekAtLastError());
+}
+
 template<typename T>
 T* allocate(const size_t num)
 {
@@ -76,21 +91,6 @@ T* copy_on_device(const T* src_ptr, const size_t num)
   cuda::copy_on_device(dst_ptr, src_ptr, num);
 
   return dst_ptr;
-}
-
-void device_sync()
-{
-  cuda::check_error(cudaDeviceSynchronize());
-}
-
-void device_reset()
-{
-  cuda::check_error(cudaDeviceReset());
-}
-
-void peek_at_last_error()
-{
-  cuda::check_error(cudaPeekAtLastError());
 }
 
 } // cuda
