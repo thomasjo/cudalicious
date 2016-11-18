@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -eu
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source_dir="$( dirname "${script_dir}" )"
+build_dir="${source_dir}/build"
+
+cmake -E echo "Removing build directory..."
+cmake -E remove_directory "${build_dir}"
+cmake -E echo "Cleaning finished"

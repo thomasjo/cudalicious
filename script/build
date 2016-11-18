@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -eu
+
+for opt in "${@:-}"; do
+  case ${opt} in
+    --debug)
+      BUILD_TYPE="Debug"
+      shift
+      ;;
+    --with-examples)
+      WITH_EXAMPLES="on"
+      shift
+      ;;
+    *) # Unknown option...
+    ;;
+  esac
+done
+
+if [[ "${XCODE73_DIR}" ]]; then
+  export DEVELOPER_DIR="${XCODE73_DIR}/Contents/Developer"
+fi
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source_dir="$( dirname "${script_dir}" )"
+build_dir="${source_dir}/build"
+
+cmake -E make_directory "${build_dir}"
+cmake -E chdir ${build_dir} cmake \
+  -DCMAKE_BUILD_TYPE="${BUILD_TYPE:=Release}" \
+  -DBUILD_EXAMPLES="${WITH_EXAMPLES:=off}" \
+  "${source_dir}"
+cmake --build "${build_dir}"
