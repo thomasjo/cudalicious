@@ -93,4 +93,35 @@ T* copy_on_device(const T* src_ptr, const size_t num)
   return dst_ptr;
 }
 
+cudaEvent_t event_create()
+{
+  cudaEvent_t event;
+  cuda::check_error(cudaEventCreate(&event));
+
+  return event;
+}
+
+void event_destroy(cudaEvent_t event)
+{
+  cuda::check_error(cudaEventDestroy(event));
+}
+
+void event_record(cudaEvent_t event, cudaStream_t stream = 0)
+{
+  cuda::check_error(cudaEventRecord(event, stream));
+}
+
+void event_sync(cudaEvent_t event)
+{
+  cuda::check_error(cudaEventSynchronize(event));
+}
+
+float event_elapsed_time(cudaEvent_t start, cudaEvent_t stop)
+{
+  auto elapsed_time = 0.f;
+  cuda::check_error(cudaEventElapsedTime(&elapsed_time, start, stop));
+
+  return elapsed_time;
+}
+
 } // cuda
