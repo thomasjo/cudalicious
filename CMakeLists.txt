@@ -16,13 +16,10 @@ if (BUILD_EXAMPLES)
   endif()
 
   find_package(CUDA REQUIRED)
-  set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_30 -std=c++11 -Xcompiler -Wno-unused,-Wno-language-extension-token")
+  set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_30 -std=c++11 -Xcompiler -Wno-unused,-Wno-unused-parameter,-Wno-language-extension-token")
 
   # Temporary "hack"...
   include_directories(include)
 
-  cuda_add_executable(vector_add
-    example/vector_add/main.cpp
-    example/vector_add/vector_add.cu
-  )
+  cuda_add_executable(vector_add example/vector_add/vector_add.cu)
 endif()
