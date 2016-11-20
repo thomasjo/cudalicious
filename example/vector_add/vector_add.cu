@@ -45,8 +45,8 @@ std::vector<T> vector_add(const std::vector<T>& a, const std::vector<T>& b)
   // Record the start event.
   cuda::event_record(kernel_start);
 
-  // Launch addition kernel.
-  std::cout << "Launching kernel... " << std::flush;
+  // Launch the addition kernel.
+  std::cout << "Executing kernel... " << std::flush;
   add_kernel<<<blocks_per_grid, threads_per_block>>>(d_c, d_a, d_b, n);
 
   // Record, and wait for the stop event.
