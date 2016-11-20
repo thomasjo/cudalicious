@@ -92,8 +92,7 @@ int main()
   const auto cpu_result = a + b;
 
   // Verify that the CPU and GPU results are equal (to within desired epsilon).
-  constexpr auto eps = 1e-16F;
-  const auto equalish = [](float a, float b) { return std::abs(a - b) < eps; };
+  const auto equalish = [](float a, float b) { return std::abs(a - b) < 1e-16F; };
   const auto mismatched = std::mismatch(gpu_result.begin(), gpu_result.end(), cpu_result.begin(), equalish);
   if (mismatched.first != gpu_result.end()) {
     std::cerr << "CPU and GPU results do not correspond!\n";
