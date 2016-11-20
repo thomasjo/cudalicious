@@ -55,7 +55,7 @@ std::vector<T> vector_add(const std::vector<T>& a, const std::vector<T>& b)
 
   // Calculate elapsed kernel execution time.
   const auto msec_total = cuda::event_elapsed_time(kernel_start, kernel_stop);
-  std::cout << "finished in " << msec_total << " ns\n";
+  std::cout << "finished in " << msec_total << " ms\n";
 
   // Destroy timing events.
   cuda::event_destroy(kernel_start);
