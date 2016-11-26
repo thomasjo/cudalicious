@@ -17,10 +17,6 @@ for opt in "${@:-}"; do
   esac
 done
 
-if [[ "${XCODE73_DIR}" ]]; then
-  export DEVELOPER_DIR="${XCODE73_DIR}/Contents/Developer"
-fi
-
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source_dir="$( dirname "${script_dir}" )"
 build_dir="${source_dir}/build"
