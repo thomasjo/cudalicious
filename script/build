@@ -2,18 +2,41 @@
 
 set -eu
 
+script_name="$(basename "$0")"
+
+read -r -d '$' usage <<EOF
+Usage:
+  ${script_name} [--with-examples] [--debug]
+  ${script_name} -h | --help
+
+Options:
+  -h --help        Show this screen.
+  --with-examples  Build examples.
+  --debug          Build examples using debug mode.
+$
+EOF
+
 for opt in "${@:-}"; do
   case ${opt} in
-    --debug)
-      BUILD_TYPE="Debug"
-      shift
+    "") # Default; no options.
+      ;;
+    -h|--help)
+      echo "${usage}"
+      exit
       ;;
     --with-examples)
       WITH_EXAMPLES="on"
       shift
       ;;
+    --debug)
+      BUILD_TYPE="Debug"
+      shift
+      ;;
     *) # Unknown option...
-    ;;
+      printf "${script_name}: invalid option -- '${opt//-/}'\n"
+      echo "${usage}"
+      exit 1
+      ;;
   esac
 done
 
