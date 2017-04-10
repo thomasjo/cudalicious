@@ -124,4 +124,4 @@ float event_elapsed_time(cudaEvent_t start, cudaEvent_t stop)
   return elapsed_time;
 }
 
-} // cuda
+}  // namespace cuda

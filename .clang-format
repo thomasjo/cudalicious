@@ -1,0 +1,12 @@
+Language: Cpp
+Standard: Cpp11
+
+BasedOnStyle: Chromium
+ColumnLimit: 120
+BreakBeforeBraces: Stroustrup
+SpaceAfterTemplateKeyword: false
+
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: true
+FixNamespaceComments: true

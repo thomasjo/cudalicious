@@ -17,30 +17,18 @@ using status_t = cusolverStatus_t;
 std::string get_status_message(status_t status)
 {
   switch (status) {
-    case CUSOLVER_STATUS_SUCCESS:
-      return "The operation completed successfully";
-    case CUSOLVER_STATUS_NOT_INITIALIZED:
-      return "The library was not initialized.";
-    case CUSOLVER_STATUS_ALLOC_FAILED:
-      return "Resource allocation failed.";
-    case CUSOLVER_STATUS_INVALID_VALUE:
-      return "An unsupported value or parameter was passed.";
-    case CUSOLVER_STATUS_ARCH_MISMATCH:
-      return "The device does not support the invoked functionality.";
-    case CUSOLVER_STATUS_MAPPING_ERROR:
-      return "Mapping error.";
-    case CUSOLVER_STATUS_EXECUTION_FAILED:
-      return "The GPU program failed to execute.";
-    case CUSOLVER_STATUS_INTERNAL_ERROR:
-      return "An internal operation failed.";
-    case CUSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED:
-      return "Matrix type is not supported by the invoked functionality.";
-    case CUSOLVER_STATUS_NOT_SUPPORTED:
-      return "Operation not supported.";
-    case CUSOLVER_STATUS_ZERO_PIVOT:
-      return "Zero pivot encountered.";
-    case CUSOLVER_STATUS_INVALID_LICENSE:
-      return "Invalid license.";
+    case CUSOLVER_STATUS_SUCCESS: return "The operation completed successfully";
+    case CUSOLVER_STATUS_NOT_INITIALIZED: return "The library was not initialized.";
+    case CUSOLVER_STATUS_ALLOC_FAILED: return "Resource allocation failed.";
+    case CUSOLVER_STATUS_INVALID_VALUE: return "An unsupported value or parameter was passed.";
+    case CUSOLVER_STATUS_ARCH_MISMATCH: return "The device does not support the invoked function.";
+    case CUSOLVER_STATUS_MAPPING_ERROR: return "Mapping error.";
+    case CUSOLVER_STATUS_EXECUTION_FAILED: return "The GPU program failed to execute.";
+    case CUSOLVER_STATUS_INTERNAL_ERROR: return "An internal operation failed.";
+    case CUSOLVER_STATUS_MATRIX_TYPE_NOT_SUPPORTED: return "Matrix type is not supported by the invoked function.";
+    case CUSOLVER_STATUS_NOT_SUPPORTED: return "Operation not supported.";
+    case CUSOLVER_STATUS_ZERO_PIVOT: return "Zero pivot encountered.";
+    case CUSOLVER_STATUS_INVALID_LICENSE: return "Invalid license.";
   }
 
   return "An unknown error occured.";
@@ -74,8 +62,16 @@ int geqrf_buffer_size(handle_t handle, int m, int n, float* a, int lda)
   return buffer_size;
 }
 
-void geqrf(handle_t handle, int m, int n, float* a, int lda, float* tau, float* workspace, int workspace_size,
-           int* info, bool verify = false)
+void geqrf(handle_t handle,
+           int m,
+           int n,
+           float* a,
+           int lda,
+           float* tau,
+           float* workspace,
+           int workspace_size,
+           int* info,
+           bool verify = false)
 {
   check_error(cusolverDnSgeqrf(handle, m, n, a, lda, tau, workspace, workspace_size, info));
   if (!verify) return;
@@ -85,5 +81,5 @@ void geqrf(handle_t handle, int m, int n, float* a, int lda, float* tau, float* 
   assert(temp == 0);
 }
 
-} // solver
-} // cuda
+}  // namespace solver
+}  // namespace cuda
